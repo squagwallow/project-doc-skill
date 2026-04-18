@@ -105,3 +105,20 @@ Date: 2026-04-18*
 cross-cutting pattern, not as its own prototype.
 *It wraps any storage choice rather than competing with one; a separate
 prototype would mis-frame it as a storage alternative. Date: 2026-04-18*
+
+**Decision:** `work-log.md` is a meta-project-only file, not a default
+file in generated deliverable architectures.
+*The meta project benefits from a cross-project professional work
+journal for case studies and pitches; generated deliverables optimize
+for a single project's lifespan and audience. Surfaced by job-search
+retrofit (v0.4-era output correctly lacks work-log). The skill's output
+shape is smaller than the meta project's own shape — this is correct
+and intentional. Date: 2026-04-18*
+
+**Decision:** Retrofit is a first-class flow for v1, not an edge case.
+*Job-search has already been retrofitted once (v0 → v0.4) and will be
+retrofitted again (v0.4 → v1). Existing operator projects need a
+reliable path to adopt new deliverable architecture without rerunning
+the interview stage. This validates the interview → captured-state →
+generation seam and makes "retrofit mode" a v1 skill feature candidate.
+Date: 2026-04-18*
