@@ -11,37 +11,47 @@ Everything below the divider is the prompt itself.
 
 ---
 
-## Stage A — Manual scaffold (do this first, in Google Drive, ~15 min)
+## Stage A — Scaffold via Apps Script (~5 min)
 
-1. In Google Drive, create a new folder: **"Job Search"**
-2. Inside, create subfolders:
-   - `01-Upwork`
-   - `02-General-Jobs` (leave empty)
-   - `03-Process`
-   - `03-Process/Writing-Samples`
-   - `04-Queue`
-   - `05-Formats`
-   - `_System` (for Apps Script deployment URL)
-3. In the root "Job Search" folder, create empty Google Docs:
-   - `Entry`, `Current State`, `Decision Log`, `Handoff Log`
-4. In `01-Upwork/`: create empty `Profile`, `Portfolio`, `Strategy`,
-   `Income Strategy` Docs, and empty `Portfolio Summary` Sheet
-5. In `03-Process/`: create empty `Job Search Prompt`,
-   `Prepare Application Prompt`, `Cover Letter Style Guide` Docs
-6. In `04-Queue/`: create empty `Flagged Jobs` Sheet
-7. In `05-Formats/`: create empty `Job Listing Format`,
-   `Writing Sample Format` Docs
-8. Open any Sheet in the folder → Extensions → Apps Script → paste the
-   bridge script from
+The bridge.gs file now includes a `setupScaffold()` function that
+creates the entire folder tree, empty Docs, and empty Sheets in one
+call. No manual file creation needed.
+
+1. Go to [script.google.com](https://script.google.com) → New project
+2. Name the project something memorable (e.g., "Job Search Bridge")
+3. Delete the default `Code.gs` contents; paste the entire contents of
    `prototypes/01-google-docs-apps-script/generated/apps-script/bridge.gs`
-9. In the bridge script, replace the `REPLACE_WITH_*` constants with
-   actual Drive folder ID, Doc IDs, and Sheet IDs (get these from the
-   URL bar of each file — the long string between `/d/` and `/edit`)
-10. Deploy the Apps Script as Web App: execute as "Me", access "Anyone
-    with link". Copy the deployment URL. Paste it into the `_System`
-    folder as a Doc called `Bridge URL`
-11. Once scaffold is done, paste everything below the divider into a
-    fresh Claude session
+4. Review the `PROJECT_CONFIG` block at the top — the default is
+   configured for job-search. Edit only if deploying a different
+   project
+5. Click **Run** → select function `setupScaffold` → approve the
+   one-time OAuth consent (Google will show an "unverified app"
+   warning; click Advanced → Go to [project name] (unsafe) — this is
+   expected for personal Apps Scripts)
+6. Check **Execution log** (View menu → Logs or Cmd/Ctrl+Enter): you
+   should see one line per folder, doc, and sheet created
+7. Verify in Drive: a new "Job Search" folder exists with the full
+   tree inside
+8. **Deploy** the script as Web App:
+   - Deploy → New deployment → Type: Web app
+   - Execute as: Me
+   - Who has access: Anyone with the link
+   - Click Deploy, copy the deployment URL
+9. Open the root "Job Search" folder in Drive → find the `_System`
+   subfolder → create a new Doc called `Bridge URL` and paste the
+   deployment URL inside
+10. Scaffold complete. Paste everything below the divider into a fresh
+    Claude (or Perplexity) session to begin Stage B
+
+**What the setup function does:**
+- Creates the root folder if it doesn't exist
+- Creates all subfolders (supports nested paths)
+- Creates all empty Docs in their right folders
+- Creates all empty Sheets in their right folders
+- Stores every file's ID in Script Properties so the runtime bridge
+  can resolve files by name automatically — no manual ID pasting
+- Idempotent: running it again picks up existing files rather than
+  creating duplicates
 
 ---
 
