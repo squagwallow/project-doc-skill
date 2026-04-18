@@ -1,13 +1,11 @@
 project_slug: project-doc-skill
 doc_type: comparison-matrix
 updated_at: 2026-04-18
+status: Pass 1 filled
 
-# Comparison Matrix
+# Comparison Matrix — Pass 1 Results
 
-Rubric for scoring each prototype after Pass 1. Two axes: storage /
-human surface (which prototype), and integration plane (whether Zapier
-MCP wraps it). Scores are Pass 1 only; Pass 2 adds live-deployment
-signal.
+Pass 1 paper-analysis scores. Pass 2 live deployment will adjust these.
 
 ---
 
@@ -17,153 +15,124 @@ signal.
 - **Bootstrap skill** — a single markdown file.
 - **Deliverable architecture** — what each prototype produces.
 
-This matrix scores candidate **deliverable architectures**, not the
-meta project or the bootstrap skill.
+This matrix scores candidate deliverable architectures.
 
 ---
 
 ## Scoring scale
 
-Each dimension scored 1–5 where noted. Cost and binary fields listed
-directly.
-
-- 5 — excellent, materially better than alternatives
-- 4 — good, no real friction
-- 3 — acceptable, with caveats
-- 2 — workable but significant friction
-- 1 — broken or untenable at this use case
+1 broken / 2 significant friction / 3 acceptable / 4 good / 5 excellent.
+Cross-LLM reach scored 0–3 (count).
 
 ---
 
 ## Dimension 1 — Storage / human surface
 
-Score the deliverable architecture itself, independent of integration
-plane.
-
 | Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
 |---|---|---|---|---|
-| Non-technical client friendliness (1–5) | | | | |
-| Client edit safety — how easily a client can break something (1–5, higher = safer) | | | | |
-| Narrative memory fit — document-shaped content (1–5) | | | | |
-| Structured state fit — tabular/record-shaped content (1–5) | | | | |
-| Client-facing surface clarity — can client skim in under 2 min (1–5) | | | | |
-| Operator-side power — can operator do bulk edits, find-replace, history (1–5) | | | | |
-| Multi-client isolation — separate engagements cleanly separated (1–5) | | | | |
-| Session persistence — survives across LLM sessions without manual work (1–5) | | | | |
-| Handoff / compaction fit — does end-of-session update feel natural (1–5) | | | | |
-| Cross-LLM reach — how many of Claude, ChatGPT, Perplexity can read and write repeatedly (count 0–3) | | | | |
-| Mainstream familiarity — does the typical Upwork client already know it (1–5) | | | | |
-
----
+| Non-technical client friendliness | 1 | 5 | 3 | 4 |
+| Client edit safety | 5 | 4 | 4 | 3 |
+| Narrative memory fit | 4 | 5 | 5 | 3 |
+| Structured state fit | 3 | 5 | 3 | 5 |
+| Client-facing surface clarity | 1 | 5 | 3 | 4 |
+| Operator-side power | 5 | 3 | 4 | 3 |
+| Multi-client isolation | 5 | 5 | 3 | 3 |
+| Session persistence | 5 | 4 | 4 | 4 |
+| Handoff / compaction fit | 5 | 4 | 4 | 4 |
+| Cross-LLM reach (0–3) | 1.5 | 2.7 | 2.3 | 2.2 |
+| Mainstream familiarity | 1 | 5 | 2 | 4 |
+| **Subtotal (×/55 + cross-LLM)** | **36 + 1.5** | **45 + 2.7** | **35 + 2.3** | **37 + 2.2** |
 
 ## Dimension 2 — Write-back bridge
 
-How updates get from the model into the canonical state.
-
-| Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
+| Dimension | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Native bridge available — official MCP, API, or equivalent (yes/no) | | | | |
-| Bridge setup burden (1–5, higher = easier) | | | | |
-| Bridge reliability — does it work without babysitting (1–5) | | | | |
-| Bridge cost (direct) | | | | |
-| Replaceable without Zapier — can operator do this without a Zapier sub (yes/no) | | | | |
-
----
+| Native bridge | no (manual git) | yes (Apps Script) | yes (API) | yes (MCP) |
+| Bridge setup burden | 5 | 2 | 3 | 3 |
+| Bridge reliability | 5 | 4 | 4 | 4 |
+| Bridge cost (direct) | $0 | $0 | $0 | $0 |
+| Replaceable without Zapier | yes | yes | yes | yes |
 
 ## Dimension 3 — Cost
 
-Realistic operator and client costs at 3-concurrent-engagement scale.
-
-| Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
+| Dimension | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Operator monthly cost (USD) | | | | |
-| Client monthly cost (USD) | | | | |
-| Free-tier scaling cliff — where does free tier break | | | | |
-| Zapier required (yes / optional / no) | | | | |
-| Zapier realistic monthly cost at 3-engagement scale (USD) | | | | |
+| Operator monthly (3-eng) | $0 | $0–6 | $5–8 | ~$10 |
+| Client monthly | $0 | $0 | $0 (account needed) | $0 |
+| Free-tier scaling cliff | none | Apps Script quotas (far off) | private notes at ~3 eng | guest seats at scale |
+| Zapier required | no | no | no | no |
+| Zapier cost at 3-eng | $0 | $0 | $0 | $0 |
 
----
+## Dimension 4 — Deployment
 
-## Dimension 4 — Deployment (Pass 1 observation)
-
-How hard is it to get from "operator ran the skill" to "architecture
-exists and is ready to use."
-
-| Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
+| Dimension | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Clicks to running — approximate step count | | | | |
-| Accounts the operator must create | | | | |
-| Accounts the client must create | | | | |
-| Auth / OAuth setup complexity (1–5, higher = simpler) | | | | |
-| Time from zero to usable (estimate) | | | | |
+| Clicks to running (approx steps) | 7 | 10 | 7 | 10 |
+| Accounts operator must create | 0 | 0 | 0–1 | 0–1 |
+| Accounts client must create | 0 | 0 | 1 | 0–1 |
+| Auth / OAuth simplicity | 5 | 3 | 4 | 3 |
+| Time to usable (first time) | ~10 min | ~45 min | ~25 min | ~30 min |
+| Time to usable (template) | ~5 min | ~15 min | ~10 min | ~10 min |
 
----
-
-## Dimension 5 — Case-study fit
-
-Does the architecture cleanly hold the six week-1 content payload items
-from `test-project-spec.md`. Score each prototype on each item (1–5).
+## Dimension 5 — Case-study fit (1–5 per payload item)
 
 | Payload item | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Discovery summary (narrative) | | | | |
-| Current-state audit table (structured) | | | | |
-| Three bottleneck hypotheses (decisions with rationale) | | | | |
-| Proposed week-2 scope (handoff artifact) | | | | |
-| Weekly client update (client-facing surface) | | | | |
-| Build-trigger moment (sibling-variant handoff test) | | | | |
-
----
+| Discovery summary (narrative) | 5 | 5 | 5 | 4 |
+| Current-state audit table (structured) | 4 | 5 | 3 | 5 |
+| Bottleneck hypotheses (decisions + rationale) | 5 | 5 | 4 | 5 |
+| Week-2 scope / handoff | 5 | 4 | 5 | 4 |
+| Weekly client update (client-facing) | 2 | 5 | 4 | 5 |
+| Build-trigger moment (sibling handoff) | 5 | 4 | 5 | 5 |
+| **Subtotal (×/30)** | **26** | **28** | **26** | **28** |
 
 ## Dimension 6 — Operator maintainability
 
-How much ongoing operator work the architecture creates.
-
-| Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
+| Dimension | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Sync discipline required — how much operator must manage drift (1–5, higher = less) | | | | |
-| Template reuse — can operator spin up next engagement fast (1–5) | | | | |
-| Backup / archival — does canonical state survive if the platform dies (1–5) | | | | |
-
----
+| Sync discipline required (higher = less needed) | 5 | 4 | 3 | 3 |
+| Template reuse | 4 | 4 | 5 | 5 |
+| Backup / archival | 5 | 4 | 3 | 3 |
+| **Subtotal (×/15)** | **14** | **12** | **11** | **11** |
 
 ## Dimension 7 — V1 design fit
 
-Judgment calls about the future state.
-
-| Dimension | 00 baseline | 01 Google Docs | 02 HackMD | 03 Notion |
+| Dimension | 00 | 01 | 02 | 03 |
 |---|---|---|---|---|
-| Sibling-variant readiness — how cleanly would `skill-code-variant` extend this with a git backend (1–5) | | | | |
-| Interview → captured-state → generation seam — does this architecture make the seam natural or awkward (1–5) | | | | |
-| V1 overhaul viability — candidate plausibility for v1 as-is (1–5) | | | | |
+| Sibling-variant readiness | 5 | 4 | 3 | 5 |
+| Interview → captured-state → generation seam | 5 | 5 | 5 | 5 |
+| V1 overhaul viability (as v1 candidate) | 2 | 5 | 3 | 5 |
+| **Subtotal (×/15)** | **12** | **14** | **11** | **15** |
 
 ---
 
-## Totals and recommendation
+## Totals
 
-After scoring all dimensions, compute:
-
-- **Storage raw score** — sum of Dimension 1 (max 50, plus cross-LLM
-  count as bonus)
-- **Bridge score** — sum of Dimension 2 (scaled 1–5 equivalents)
-- **Cost-adjusted score** — storage raw score minus a cost penalty if
-  monthly operator cost > $40 at 3-engagement scale
-- **Case-study fit** — sum of Dimension 5 (max 30)
-- **V1 fit** — sum of Dimension 7 (max 15)
-
-Recommendation template:
-
-- **Top pick:** [prototype name] — [one sentence why]
-- **Runner-up:** [prototype name] — [one sentence why]
-- **Drop:** [any prototype scoring <60% of top] — [one sentence why]
-- **Zapier MCP verdict:** [required / optional / avoid] — [one sentence why]
-- **Promote to Pass 2:** [1–2 prototypes]
+| Prototype | Dim1 (raw) | Dim5 | Dim6 | Dim7 | Cross-LLM | Headline |
+|---|---:|---:|---:|---:|---:|---|
+| 00 baseline | 36/55 | 26/30 | 14/15 | 12/15 | 1.5/3 | Control; best on cost + isolation, worst on client-facing |
+| 01 Google Docs | 45/55 | 28/30 | 12/15 | 14/15 | 2.7/3 | Best overall on paper |
+| 02 HackMD | 35/55 | 26/30 | 11/15 | 11/15 | 2.3/3 | Markdown purist; weak on client familiarity |
+| 03 Notion | 37/55 | 28/30 | 11/15 | 15/15 | 2.2/3 | Strongest ceiling; depends on operator discipline |
 
 ---
 
-## What this matrix does not score
+## Recommendation
 
-- Live deployment friction (Pass 2)
-- Long-term reliability (months of use)
-- Team collaboration at scale beyond operator + client + 2 agency staff
-- Code-variant compatibility beyond "clean backend extension possible"
+- **Top pick:** **Prototype 01 (Google Docs + Apps Script)** — best balance of client familiarity, surface quality, and cross-LLM reach. Setup burden is the real cost; template duplication mostly solves it on engagement 2+.
+- **Close second:** **Prototype 03 (Notion + MCP)** — higher structured-state ceiling and highest sibling-variant readiness. Recommended when client is already Notion-native. Operator-discipline dependency is the main caveat.
+- **Drop from candidate pool:** **Prototype 02 (HackMD)** — technically clean but weakest on mainstream client familiarity and requires client account creation; better as an operator-internal draft workspace than as the client-facing deliverable.
+- **Keep as control:** **Prototype 00 (markdown/git baseline)** — remains the operator-internal / technical-engagement default and the basis for `skill-code-variant`.
+- **Zapier MCP verdict:** optional across all prototypes. Only required as the cross-cutting integration plane when connecting to non-canonical tools (HubSpot, Metricool, Xero, etc.), which is true for this engagement regardless of prototype choice. Budget ~$20/mo on any of them if real tool orchestration is in scope.
+- **Promote to Pass 2:** **01 and 03**. Head-to-head live deployment against the Lumen case study (or the operator's first real engagement) is the right next decision-gate.
+
+---
+
+## Pass 1 confidence note
+
+Scores are paper-analysis based on architecture artifacts. The axes most
+likely to shift under live deployment:
+- Setup burden for 01 (may be worse or better than the 45-min estimate)
+- Operator-discipline dependency for 03 (hard to judge without multi-
+  engagement history)
+- Cross-LLM reach real-world behavior (MCP reliability varies)

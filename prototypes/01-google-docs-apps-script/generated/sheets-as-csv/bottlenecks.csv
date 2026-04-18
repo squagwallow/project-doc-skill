@@ -1,0 +1,4 @@
+id,name,current_flow,proposed_flow,current_owner,proposed_owner,hours_saved_per_week,priority,status
+BF-01,Metricool → Notion Social Reporting,"Jo posts via Metricool; Priya manually screenshots and pastes to client Notion pages weekly","Metricool → Zapier weekly trigger → Notion rows; chart embedding subcontracted",Priya,Jo,3.5,P1,Proposed
+BF-02,Lead Qualification,"HubSpot form → Zapier → Notion CRM; Priya reviews and assigns all leads","HubSpot → rule-based filter → auto-route to Marcus; strategic flag → Priya",Priya,Marcus,2.2,P2,Proposed
+BF-03,Invoicing Reconciliation,"Priya manually reconciles billable hours monthly and transcribes to Xero","Notion billable hours → Zapier → Xero draft invoices; Priya reviews and sends",Priya,Priya,1.2,P2,Proposed
