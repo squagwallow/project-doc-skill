@@ -122,3 +122,44 @@ reliable path to adopt new deliverable architecture without rerunning
 the interview stage. This validates the interview → captured-state →
 generation seam and makes "retrofit mode" a v1 skill feature candidate.
 Date: 2026-04-18*
+
+**Decision:** Right deliverable architecture is project-shape dependent,
+not universal. V1 skill must choose between 01 (Google Docs) and 03
+(Notion) based on interview signals — not hardcode one as the default
+for all projects.
+*Job-search paper retrofit flipped Pass 1's Lumen ordering: 03 wins for
+operator-internal, structured-state-heavy projects; 01 wins for
+narrative-heavy client-facing projects. The skill adapting to project
+shape is the correct v1 behavior. Date: 2026-04-18*
+
+**Decision:** Notion (03) is the v1 default deliverable architecture;
+01 (Google Docs) is the explicit fallback when Notion is wrong for the
+user or intended audience.
+*Across the two case studies, 03 wins more often on operator-felt fit;
+01 wins narrowly on mainstream client familiarity. Default-to-Notion
+captures the stronger average; an explicit screening step during the
+interview catches the cases where 01 is better. Date: 2026-04-18*
+
+**Decision:** V1 skill interview includes an architecture-screening
+step with a canonical script.
+*Script draft: "Have you (or the intended user of this project) ever
+used Notion before? Tell me what you think about it and whether you
+feel open to using it as your primary interface on this project." If
+pushback: "It sounds like Notion might be a little too involved for the
+intended user. We can use Google Docs instead. For this project Notion
+is slightly preferable for [reasons derived from the interview], but
+Google Docs works well too — it's only a slight difference. Want me to
+help you choose, or do you have a clear preference?" Final draft lives
+in the v1 skill. Date: 2026-04-18*
+
+**Decision:** V1 interview includes an ingestion branch:
+"Is this a project you already have been working on somewhere else?"
+If yes, skill requests current-state artifacts (paste, URL, upload) and
+synthesizes captured state from them instead of conducting a fresh
+interview. If no, standard interview flow.
+*Promotes retrofit from an edge-case / Track C item to a core v1 flow.
+Solves the "many projects need a dedicated backfill process" problem by
+making ingestion a branch of the same skill. The downstream generation
+stage is identical regardless of how captured state was produced — fresh
+interview, ingestion, or mixed. Reinforces the interview → captured-state
+→ generation seam as the skill's core architecture. Date: 2026-04-18*
