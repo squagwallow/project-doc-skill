@@ -9,6 +9,28 @@ Append-only. Format: "Decision: rationale in one sentence. Date: [date]"
 
 ---
 
+## 2026-04-19 — v1.1 findings from job-search reference implementation audit
+
+**Decision:** Connector inventory question must come before architecture recommendation — ask what MCPs are active in the session before proposing git/Notion/Drive split.
+*Current Q4.9 assumes Notion is the only option; real sessions may have Drive, Playwright, or neither. Date: 2026-04-19*
+
+**Decision:** Tool connectors (Playwright, browser MCPs) are a third connector category, distinct from data connectors (Notion, Drive) and orchestration (Git).
+*Tool connectors perform actions rather than storing data — they belong in the activation layer of prompt-engineer-entry.md, not the Notion or Drive sections. Date: 2026-04-19*
+
+**Decision:** Schema design heuristics belong in the skill's Notion setup section — field type tradeoffs and taxonomy emergence are not obvious and must be taught.
+*The job-search implementation demonstrated: collapse related statuses into one select field to minimize write complexity; let tag taxonomies emerge from use rather than designing them upfront. Date: 2026-04-19*
+
+**Decision:** job-search/v1-notion-mcp is the canonical reference implementation for the v1 architecture.
+*First full end-to-end validation of git + Notion MCP two-layer architecture with live data, confirmed working across multiple sessions. Date: 2026-04-19*
+
+**Decision:** Google Drive MCP is a valid third connector path — unimplemented in v1.0, target for v1.1.
+*Drive is better suited than Notion for document-style and spreadsheet content; some projects will need both or Drive instead of Notion. Date: 2026-04-19*
+
+**Decision:** The skill needs four architecture patterns, not two: git-only, git+Notion, git+Drive, git+Notion+Drive.
+*Routing logic: Notion = row-structured data the user edits as a database; Drive = documents and sheets the user writes, shares, or exports. Date: 2026-04-19*
+
+---
+
 ## 2026-04-19 — v1 architecture decisions
 
 **Decision:** v1 deliverable architecture is git + scoped Notion MCP.
