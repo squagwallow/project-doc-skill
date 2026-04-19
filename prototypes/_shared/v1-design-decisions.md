@@ -163,3 +163,126 @@ making ingestion a branch of the same skill. The downstream generation
 stage is identical regardless of how captured state was produced — fresh
 interview, ingestion, or mixed. Reinforces the interview → captured-state
 → generation seam as the skill's core architecture. Date: 2026-04-18*
+
+---
+
+## Late-thread-2 corrections (live deployment surfaced these)
+
+These supersede or qualify earlier paper-analysis decisions. They came
+from operator's actual interaction with Claude.ai's connectors during a
+deployment attempt that timed out.
+
+**Decision:** Claude.ai's Notion connector uses managed OAuth that
+grants workspace-wide access; per-page scoping is NOT configurable
+through the consumer connector UI.
+*Verified by operator during attempted deployment. The "page-scoped MCP"
+mitigation cited in Pass 1 findings for prototype 03 is not available
+through Claude.ai's standard Notion integration. Page-scoping only
+exists at the API layer via internal integration tokens, not through
+managed OAuth. Date: 2026-04-18*
+
+**Decision:** Switching Notion workspaces in Claude.ai's connector
+requires deleting and re-adding the integration; concurrent
+multi-workspace use is not supported.
+*Verified by operator. This makes "dedicated workspace per engagement"
+not viable for any operator with concurrent projects, multiple clients,
+or any other Notion content. Tier 2 (managed OAuth + dedicated
+workspace) collapses as a viable v1 default for anyone operating at
+realistic scale. Date: 2026-04-18*
+
+**Decision:** Tier 3 (local MCP server + Notion internal integration
+token scoped to specific page IDs) is the only Notion path that
+provides reliable per-page scoping at the API layer.
+*Notion's official open-source MCP server can be run with an internal
+integration token. Operator installs Node, runs the server, configures
+Claude desktop's MCP config to point at it. Setup ~15 min/project; no
+ongoing subscription. Engineering-adjacent — fits skill-code-variant
+mandate more than v1 no-code mandate. Date: 2026-04-18*
+
+**Decision:** Apps Script bridge architecture (prototype 01) has
+structural per-project isolation via per-project deployment, but trades
+tool-use enforcement for scoping rigor.
+*Each project gets its own Apps Script Web App with its own URL and
+PROJECT_CONFIG. LLM hits the bridge URL with action+file parameters;
+bridge enforces what's accessible. But the LLM has to remember to call
+the bridge — there's no tool-use enforcement like native MCP. Mode
+shifts work via entry-doc conditional reading; write-backs should be
+operator-initiated for safety. Date: 2026-04-18*
+
+**Decision:** Bridge architectures (Apps Script, custom HTTP, etc.)
+trade tool-use enforcement for scoping rigor; native MCP / connector
+architectures (Zapier MCP, Pipedream, Make.com) trade subscription cost
+for tool-use enforcement.
+*This is the fundamental architectural axis. Bridges give tight scoping
+via per-project deployment and free hosting, but orchestration depends
+on entry-doc instructions and operator nudges. Native tool-use
+architectures give reliable mode shifts and write-backs via registered
+tool calls, but require subscription cost and per-tool definition work.
+Date: 2026-04-18*
+
+**Decision:** Render-layer one-way sync (e.g., git → Notion read-only
+view) does NOT work for editable content like writing-sample catalogs
+or job queues.
+*If operator adds an item in the rendered surface, canonical store
+doesn't see it; if operator adds in the canonical store, operator now
+maintains two write paths. Drift is inevitable. One-way sync only works
+for content the operator never edits in the render layer. Bidirectional
+sync is hard and brittle. Render-layer sync is therefore not a viable
+solution to the "git is canonical, Notion is pretty" architecture
+sketch. Date: 2026-04-18*
+
+**Decision:** Claude.ai's GitHub connector is read-only file-picker
+behavior; it does NOT support seamless git write operations the way
+Perplexity's GitHub connector does.
+*Earlier mistaken claim in this session conflated Claude Code (CLI with
+shell/Bash access to git) with Claude.ai's GitHub connector. They are
+not the same. Claude Code can do real git operations because it has
+shell access; Claude.ai's GitHub connector is for selecting files to
+ingest into context. The "git as canonical orchestration layer" pattern
+that works in Perplexity is not currently replicable in Claude.ai
+without going through Claude Code. Date: 2026-04-18*
+
+**Decision (supersedes earlier):** Notion (03) is NOT the v1 default
+deliverable architecture. The earlier "Notion default with screening"
+decision was based on paper-analysis assumptions about page-scoping
+that turned out to be unavailable in Claude.ai's connector.
+*The Notion path is now: tier 3 (local MCP + internal token) only,
+treated as engineering-adjacent / sibling-variant scope. For non-
+technical operator deployment, prototype 01 (Apps Script bridge) is
+the more honest default — accepting bridge orchestration looseness as
+the trade-off. Architecture choice is now actively unresolved pending
+operator decision; see handoff-thread-02.md. Date: 2026-04-18*
+
+**Decision:** Pass 1 paper analysis had a structural blind spot:
+claimed tool capabilities without verification. Future v1 work must
+verify capability claims against actual tool behavior in the operator's
+specific account/version before treating them as load-bearing in
+design.
+*Specific failure mode this thread: prototype 03's "page-scoped MCP"
+guardrail was presented in Pass 1 findings as a real Notion mitigation;
+live deployment surfaced that the configuration path doesn't exist in
+Claude.ai's connector. Process correction: capability claims get
+flagged as "claimed in [source], unverified" until verified, and Pass 1
+paper rigor must not be confused with verified rigor. Date: 2026-04-18*
+
+**Decision:** No clean v1 deliverable architecture exists in the
+current ecosystem (April 2026). All viable paths involve real
+trade-offs. v1 must either pick a least-bad option and ship, or wait
+for ecosystem maturation (better Claude.ai connectors, broader MCP
+support, etc.).
+*Three viable paths surfaced in thread 2: (1) ship pure Apps Script
+bridge (prototype 01), accept orchestration looseness; (2) commit to
+Perplexity-only operating mode for the architecture's lifetime, lose
+multi-LLM flexibility; (3) wait. Architecture decision currently
+deferred to fresh thread with consolidated truths. Date: 2026-04-18*
+
+**Decision:** CLAUDE.md auto-loaded by Claude Code is the durable
+mechanism for embedding standing instructions (three-layer separation,
+notes block protocol, capability-claim verification rule). Previously,
+these instructions lived only in entry.md and silently failed to fire
+when Claude Code didn't read entry.md as bootstrap.
+*Diagnosis from thread 2: thread notes block was specified in entry.md
+but never executed because Claude Code has no automatic mechanism to
+load entry.md. CLAUDE.md is the standard Claude Code convention; placing
+the notes block protocol there ensures it loads on every session.
+Date: 2026-04-18*
