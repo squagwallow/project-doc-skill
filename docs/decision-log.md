@@ -1,11 +1,63 @@
 project_slug: project-doc-skill
 doc_type: decision-log
-updated_at: 2026-04-18
+updated_at: 2026-04-19
 url: https://cdn.jsdelivr.net/gh/squagwallow/project-doc-skill@main/docs/decision-log.md
 
 # Decision Log
 
 Append-only. Format: "Decision: rationale in one sentence. Date: [date]"
+
+---
+
+## Decision: v1 Architecture — Git + Scoped Notion MCP
+date: 2026-04-19
+status: settled
+supersedes: all prior prototype 01, 03, 04 decisions
+
+### Architecture
+- **Git** — orchestration layer. Holds entry doc, workflow prompts, 
+  strategy docs, standing instructions, session templates. 
+  LLM reads at session start. Human edits via Claude Desktop 
+  GitHub MCP or Claude Code.
+- **Notion** — user surface layer. Holds all databases and 
+  active content (queues, catalogs, logs). Human edits natively. 
+  LLM reads and writes via scoped local MCP server.
+
+### Scoping mechanism
+Notion internal integration token (not managed OAuth). 
+One integration per project. Pages explicitly shared with 
+integration at setup — nothing else in workspace is accessible. 
+Verified: LLM can only see pages shared with the integration.
+
+### LLM surfaces
+- Primary: Claude Desktop (GitHub MCP + Notion MCP confirmed working)
+- Secondary: Perplexity (native git write, Notion connector available)
+- Not supported: claude.ai web, mobile (acceptable — desktop is 90% use case)
+
+### Verified
+- GitHub MCP write: confirmed 2026-04-19
+- Notion MCP write: confirmed 2026-04-19  
+- Notion scoping: confirmed 2026-04-19 — integration sees only 
+  explicitly shared pages, not full workspace
+
+### What this retires
+- Prototype 03 (managed OAuth Notion) — scoping not viable
+- Prototype 01 (Apps Script bridge) — bridge overhead unnecessary 
+  given native MCP write capability
+- Prototype 04 (unified bridge) — same
+- Perplexity-only path — Claude Desktop now matches git write capability
+- Wait path — sufficient capability exists to ship v1 now
+
+### Known caveats
+- Naked Claude Desktop sessions have all MCP servers active 
+  simultaneously. Session isolation is prompt-enforced via entry 
+  doc, not protocol-enforced. Mitigation: entry doc explicitly 
+  scopes which Notion integration to use.
+- Adding a new project engagement requires: create Notion 
+  integration, scope pages, add config entry, restart Desktop. 
+  ~10 min setup per project. Acceptable for v1.
+- Claude.ai web and mobile have no MCP write access. 
+  Perplexity covers mobile/web use case.
 
 ---
 
